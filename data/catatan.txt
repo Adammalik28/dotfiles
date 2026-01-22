@@ -1,0 +1,8 @@
+#medanpedia
+nama:pilatus
+pass:22222222
+
+#step 1
+belajar python -1
+
+mbut

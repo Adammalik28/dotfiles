@@ -1,0 +1,58 @@
+
+==================================================
+DAFTAR PERINTAH CUSTOM (ALIAS & FUNGSI)
+==================================================
+
+NAVIGASI & PENYIMPANAN:
+- hdd      : Akses cepat path /mnt/DATA_HDD
+- ssd1     : Akses cepat path /mnt/windows/acer (Drive C)
+- ssd2     : Akses cepat path /mnt/DRIVE_D
+- mwin     : Menjalankan skrip mount partisi Windows
+- umwin    : Menjalankan skrip unmount partisi Windows
+- pmove    : Pindah file (rsync) + progress + hapus sumber
+- pcopy    : Salin file (rsync) + progress
+
+MANAJEMEN SISTEM & HARDWARE:
+- ceksis   : Dashboard info sistem (CPU, GPU, Storage, Security)
+- mycpu    : Cek status governor dan frekuensi CPU
+- powersave: Set CPU ke mode hemat daya
+- peformance: Set CPU ke mode performa tinggi
+- gpucek   : Cek mode GPU aktif (envycontrol)
+- gpuintel : Set GPU ke mode Integrated
+- gpu2     : Set GPU ke mode Hybrid
+- gpunvidia: Set GPU ke mode NVIDIA Dedicated
+- update   : Update sistem Arch Linux (pacman -Syu)
+- hapus    : Bersihkan cache dan log sampah
+- mirrorsync: Update mirrorlist tercepat via Reflector
+- ceklog  : Alat diagnosa mendalam (Config, Services, Env Vars, Driver, Logs)
+- backup   : backup config dan pengaturan sistem
+
+APLIKASI & PRODUKTIVITAS:
+- wa       : Buka dua akun WhatsApp (background)
+- wa1 / wa2: Buka WhatsApp akun spesifik
+- kali_linux: Menjalankan skrip start Kali Linux
+- exit_kali: Menjalankan skrip exit Kali Linux
+- tekken   : Menjalankan game Tekken 7
+- catat    : Edit file catatan ini (Mousepad)
+- extract  : Fungsi ekstrak universal (zip, rar, tar, dll)
+- gamemode : mode peforma untuk game
+- cari     : cari file/folder
+
+TERMINAL:
+- ls/l/la  : List direktori dengan ikon (lsd)
+- lt       : Tampilan struktur direktori (tree)
+- CTRL+R   : Pencarian history perintah (fzf)
+- simpan   : mengapus semua isi folder kecuali yang di pilih
+==================================================
+
+
+
+==================================================
+                   waydroid
+==================================================
+
+-perintah agar game tidak force close
+
+sudo waydroid shell
+setprop persist.waydroid.active_apps true
+setprop persist.waydroid.fake_touch com.mobile.legends
