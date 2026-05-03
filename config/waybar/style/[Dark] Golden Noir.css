@@ -1,0 +1,230 @@
+/* ----------- Elegant Modern Premium Floating Bar - Slim & Transparent Edition ----------- */
+
+/* Catppuccin Mocha - Compact & Highly Transparent */
+
+
+
+@define-color bar-bg rgba(17, 17, 27, 0.65);
+
+@define-color main-fg #cdd6f4;
+
+@define-color accent #cba6f7;
+
+@define-color blue #89b4fa;
+
+@define-color yellow #f9e2af;
+
+@define-color teal #94e2d5;
+
+@define-color green #a6e3a1;
+
+
+
+* {
+
+    border: none;
+
+    border-radius: 0;
+
+    font-family: "JetBrainsMono Nerd Font";
+
+    font-weight: 500;
+
+    font-size: 13px;
+
+    transition: background-color 0.35s cubic-bezier(0.4, 0.0, 0.2, 1),
+
+                color 0.35s cubic-bezier(0.4, 0.0, 0.2, 1),
+
+                box-shadow 0.35s cubic-bezier(0.4, 0.0, 0.2, 1);
+
+}
+
+
+
+/* Main Bar - Slim Floating & Highly Transparent */
+
+window#waybar {
+
+    background: @bar-bg;
+
+    color: @main-fg;
+
+    margin: 8px 14px 0 14px;
+
+    padding: 2px 4px;
+
+    border-radius: 18px;
+
+    border: 1px solid rgba(255, 255, 255, 0.07);
+
+    box-shadow: 0 12px 40px -10px rgba(0, 0, 0, 0.60);
+
+}
+
+
+
+/* Modules - Compact & Transparent */
+
+#workspaces,
+
+#taskbar,
+
+#window,
+
+#clock,
+
+#battery,
+
+#pulseaudio,
+
+#network,
+
+#cpu,
+
+#memory,
+
+#tray,
+
+#custom-cava_mviz,
+
+#custom-power {
+
+    background: transparent;
+
+    padding: 3px 10px;
+
+    margin: 4px 3px;
+
+}
+
+
+
+/* Compact Pill Workspaces */
+
+#workspaces button {
+
+    color: @main-fg;
+
+    padding: 4px 12px;
+
+    margin: 0 2px;
+
+    border-radius: 9999px;
+
+    background: transparent;
+
+    min-width: 26px;
+
+}
+
+
+
+#workspaces button:hover {
+
+    background: rgba(203, 166, 247, 0.28);
+
+    color: @accent;
+
+    box-shadow: 0 3px 12px rgba(203, 166, 247, 0.30);
+
+}
+
+
+
+#workspaces button.active {
+
+    background: @accent;
+
+    color: #1e1e2e;
+
+    font-weight: 700;
+
+    box-shadow: 0 4px 14px rgba(203, 166, 247, 0.38);
+
+}
+
+
+
+/* Accent Modules */
+
+#clock {
+
+    color: @accent;
+
+    font-weight: 700;
+
+    padding: 4px 18px;
+
+}
+
+
+
+#pulseaudio { color: @yellow; }
+
+#network    { color: @teal; }
+
+#battery    { color: @green; }
+
+
+
+#battery.warning  { color: #f38ba8; }
+
+#battery.charging { color: #a6e3a1; }
+
+
+
+#tray {
+
+    padding: 0 6px;
+
+}
+
+
+
+#custom-cava_mviz {
+
+    color: @blue;
+
+    padding: 4px 16px;
+
+}
+
+
+
+#window {
+
+    color: @main-fg;
+
+    padding: 4px 14px;
+
+    font-style: normal;
+
+}
+
+
+
+/* Subtle Hover Effect on Other Modules */
+
+#clock:hover,
+
+#battery:hover,
+
+#pulseaudio:hover,
+
+#network:hover,
+
+#cpu:hover,
+
+#memory:hover,
+
+#custom-cava_mviz:hover,
+
+#custom-power:hover {
+
+    background: rgba(255, 255, 255, 0.08);
+
+    border-radius: 9999px;
+
+}
+
