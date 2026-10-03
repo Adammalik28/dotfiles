@@ -1,0 +1,158 @@
+//* ---- 💫 https://github.com/JaKooLit 💫 ---- *//
+/* Waybar Modules - Groups Modules */
+/* Basically created to reduce the lines in Waybar Modules bank */
+/* NOTE: This is only for Groups */
+
+{
+// GROUPS
+"group/app_drawer": {
+	"orientation": "inherit",
+	"drawer": {
+		"transition-duration": 500,
+		"children-class": "custom/menu",
+		"transition-left-to-right": true
+        },
+	"modules": [
+		"custom/menu",
+		"custom/light_dark",
+		"custom/file_manager",
+		"custom/tty",
+		"custom/browser",
+		"custom/settings",
+		"custom/clipboard",
+		"custom/hint",
+	]
+},
+"group/motherboard": {
+	"orientation": "horizontal",
+	"modules": [
+		"cpu",
+		"power-profiles-daemon",
+		"memory",
+		"temperature",
+		"disk",
+	]
+},
+
+"group/mobo_drawer": {
+	"orientation": "inherit",
+	"drawer": {
+		"transition-duration": 500,
+		"children-class": "cpu",
+		"transition-left-to-right": true
+        },
+	"modules": [
+		"temperature",		
+		"cpu",
+		"power-profiles-daemon",	
+		"memory",
+		"disk",
+	]
+},
+"group/laptop": {
+	"orientation": "inherit",
+	"modules": [
+		"backlight",
+		"battery",
+	]
+},
+"group/audio": {
+	"orientation": "inherit",
+	"drawer": {
+		"transition-duration": 500,
+		"children-class": "pulseaudio",
+		"transition-left-to-right": true
+        },
+	"modules": [
+		"pulseaudio",
+		"pulseaudio#microphone",
+	]
+},
+
+"group/connections": {
+	"orientation": "inherit",
+	"drawer": {
+		"transition-duration": 500,
+		"children-class": "bluetooth",
+		"transition-left-to-right": true
+        },
+	"modules": [
+		"network",
+		"bluetooth",
+	]
+},
+
+// Power button is no longer part of this drawer (see config): when it was the drawer
+// leader, hovering it expanded the drawer and pushed it off the right edge of the screen.
+"group/status": {
+	"orientation": "inherit",
+	"drawer": {
+		"transition-duration": 300,
+		"children-class": "status-child",
+		"transition-left-to-right": false
+        },
+	"modules": [
+		"custom/lock",
+		"keyboard-state",
+		"custom/keyboard",
+	]
+},
+
+// Tray icons are collapsed behind a toggle so many open apps can't widen the bar
+"group/tray_drawer": {
+	"orientation": "inherit",
+	"drawer": {
+		"transition-duration": 300,
+		"children-class": "tray-child",
+		"transition-left-to-right": false,
+		"click-to-reveal": true
+        },
+	"modules": [
+		"custom/tray_toggle",
+		"tray",
+	]
+},
+
+"group/notify": {
+	"orientation": "inherit",
+	"drawer": {
+		"transition-duration": 500,
+		"children-class": "custom/swaync",
+		"transition-left-to-right": false
+        },
+	"modules": [
+		"custom/swaync",
+		"custom/dot_update",
+	]
+},
+
+"group/power": {
+    "orientation": "inherit",
+    "drawer": {
+        "transition-duration": 500,
+        "children-class": "drawer-child",
+        "transition-left-to-right": false
+      },
+    "modules": [
+        "custom/power",
+        "custom/quit",
+        "custom/lock",
+        "custom/reboot"
+      ]
+},
+// groups for vertical
+"group/power#vert": {
+     "orientation": "inherit",
+     "drawer": {
+        "transition-duration": 300,
+        "children-class": "not-memory",
+        "transition-left-to-right": false
+       },
+     "modules": [
+        "custom/power",
+        "custom/lock",
+        "custom/logout",
+        "custom/reboot"
+      ]
+},
+}

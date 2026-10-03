@@ -1,0 +1,10 @@
+catppuccin.catppuccin-vsc
+formulahendry.auto-close-tag
+formulahendry.auto-complete-tag
+formulahendry.auto-rename-tag
+google.geminicodeassist
+oderwat.indent-rainbow
+pkief.material-icon-theme
+repreng.csv
+ritwickdey.liveserver
+rvest.vs-code-prettier-eslint

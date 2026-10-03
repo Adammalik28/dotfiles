@@ -1,0 +1,4 @@
+blackarch-mirrorlist
+bridge-utils
+burpsuite
+python-pynput

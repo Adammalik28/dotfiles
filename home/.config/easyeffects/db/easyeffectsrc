@@ -1,0 +1,15 @@
+[StreamInputs]
+inputDevice=bluez_input.60:55:56:B9:25:48
+
+[StreamOutputs]
+outputDevice=bluez_output.60_55_56_B9_25_48.1
+plugins=bass_loudness#0,stereo_tools#0,loudness#0,equalizer#0,maximizer#0
+visiblePage=pluginsPage
+visiblePlugin=bass_loudness#0
+
+[Window]
+autostartOnLogin=true
+height=1016
+visiblePipeWirePage=testSignalsPage
+visiblePresetSheetPage=autoloadingPage
+width=1908

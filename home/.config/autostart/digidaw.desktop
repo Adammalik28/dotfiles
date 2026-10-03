@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Digidaw
+Comment=Digidaw - Personal AI Assistant
+Exec="/home/adam/Project/digidaw/start_digidaw.sh" --background
+Path=/home/adam/Project/digidaw
+Icon=/home/adam/Project/digidaw/digidaw.ico
+Terminal=false
+Categories=Utility;
+X-GNOME-Autostart-enabled=true

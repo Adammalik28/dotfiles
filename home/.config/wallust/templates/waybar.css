@@ -1,0 +1,11 @@
+/* Template Warna Dinamis dari Wallust */
+@define-color wallust-fg {{foreground}};
+@define-color wallust-bg {{background}};
+@define-color wallust-c1 {{color1}};
+@define-color wallust-c2 {{color2}};
+@define-color wallust-c3 {{color3}};
+@define-color wallust-c4 {{color4}};
+@define-color wallust-c5 {{color5}};
+@define-color wallust-c6 {{color6}};
+@define-color wallust-c7 {{color7}};
+@define-color wallust-c8 {{color8}};

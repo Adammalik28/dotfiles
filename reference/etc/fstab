@@ -1,0 +1,19 @@
+# Static information about the filesystems.
+# See fstab(5) for details.
+
+# <file system> <dir> <type> <options> <dump> <pass>
+# /dev/nvme1n1p3
+UUID=70b3e28a-f52e-41bf-8ca9-56d20818c003	/         	ext4      	rw,relatime	0 1
+
+# /dev/nvme1n1p1
+UUID=E50A-8DEA      	/boot     	vfat      	rw,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=ascii,shortname=mixed,utf8,errors=remount-ro	0 2
+
+
+# Acer - Windows System (nvme1n1p3)
+# UUID=01DC26453A05A680  /mnt/Acer  ntfs-3g  defaults,nosuid,nodev,relatime,rw,x-gvfs-show  0  0
+
+# New Volume (nvme0n1p2)
+UUID=01DC9D0D90753B90  /mnt/New_Volume ntfs-3g  defaults,nosuid,nodev,relatime,user,exec,x-gvfs-show  0  0
+
+# new_windows (New Volume)
+UUID=01DCCFE310209990 /mnt/new_windows ntfs-3g defaults,nosuid,nodev,relatime,user,exec,x-gvfs-show  0  0

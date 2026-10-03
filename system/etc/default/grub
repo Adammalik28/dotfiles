@@ -1,0 +1,21 @@
+# GRUB boot loader configuration
+
+GRUB_DEFAULT=0
+GRUB_TIMEOUT=10
+GRUB_DISTRIBUTOR="Arch"
+GRUB_CMDLINE_LINUX_DEFAULT="quiet splash acpi_backlight=native"
+GRUB_CMDLINE_LINUX=""
+
+# Preload these modules
+GRUB_PRELOAD_MODULES="part_gpt part_msdos"
+
+# Un-comment to allow the copy/paste to work if you have a high-res monitor
+# GRUB_GFXMODE=1920x1080,auto
+
+# Un-comment if you don't want GRUB to overwrite your background
+GRUB_DISABLE_OS_PROBER=false
+
+# Graphics and Terminal settings
+GRUB_TERMINAL_OUTPUT="gfxterm"
+GRUB_THEME="/boot/grub/themes/bsol/theme.txt"
+GRUB_GFXPAYLOAD_LINUX=keep
