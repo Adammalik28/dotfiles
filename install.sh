@@ -300,7 +300,8 @@ step_finish() {
     echo "  • Login ulang: gh auth login, browser, Discord, dll"
     echo "  • Tambahkan mount NTFS ke /etc/fstab (lihat reference/etc/fstab)"
     echo
-    confirm "Reboot sekarang?" && sudo reboot
+    # Reboot selalu ditanya, bahkan dengan -y.
+    ASSUME_YES=0 confirm "Reboot sekarang?" && sudo reboot
 }
 
 # ═════════════════════════════════════════════════════════════════
