@@ -1,0 +1,268 @@
+// ### macOS Clean - Top ### //
+// Flat, translucent menu bar: launcher + KooL settings + cava + app title on the left,
+// workspaces (with app icons) in the center, status icons and date/time on the right.
+// Pair with style "[macOS] Clean.css".
+{
+"include": [
+  "$HOME/.config/waybar/Modules",
+  "$HOME/.config/waybar/ModulesWorkspaces",
+  "$HOME/.config/waybar/ModulesCustom",
+  "$HOME/.config/waybar/ModulesGroups",
+  "$HOME/.config/waybar/UserModules",
+  ],
+"layer": "top",
+"exclusive": true,
+"passthrough": false,
+"position": "top",
+"height": 40,
+"margin-top": 6,
+"margin-left": 10,
+"margin-right": 10,
+"spacing": 0,
+"fixed-center": true,
+
+"modules-left": [
+	"custom/menu#mac",
+	"custom/settings#mac",
+	"custom/cava_mviz#mac",
+	"custom/media#mac",
+	"hyprland/window#mac",
+	],
+
+// workspaces with app icons; icon rules live in ModulesWorkspaces ("hyprland/workspaces#rw")
+"modules-center": [
+	"hyprland/workspaces#rw",
+	],
+
+"modules-right": [
+	"group/tray_drawer",
+	"privacy",
+	"network#speed_mac",
+	"temperature#mac",
+	"network#mac",
+	"bluetooth#mac",
+	"pulseaudio#mac",
+	"battery#mac",
+	"custom/swaync#mac",
+	"clock#mac",
+	"custom/power#mac",
+	],
+
+// ---- module definitions for this layout ----
+
+
+"custom/menu#mac": {
+	"format": "\uf303",
+	"on-click": "pkill rofi || rofi -show drun -modi run,drun,filebrowser,window",
+	"on-click-middle": "$HOME/.config/hypr/UserScripts/WallpaperSelect.sh",
+	"on-click-right": "$HOME/.config/hypr/scripts/Wlogout.sh",
+	"tooltip": true,
+	"tooltip-format": "Left Click: App Launcher\nMiddle Click: Wallpaper\nRight Click: Power Menu",
+},
+
+"custom/power#mac": {
+	"format": "\udb81\udc25",
+	"on-click": "$HOME/.config/hypr/scripts/WaybarPower.sh",
+	"on-click-right": "$HOME/.config/hypr/scripts/Wlogout.sh",
+	"tooltip": true,
+	"tooltip-format": "Left Click: Power Menu\nRight Click: Full-screen Power Menu",
+},
+
+"custom/settings#mac": {
+	"format": "\udb81\udc93",
+	"on-click": "$HOME/.config/hypr/scripts/Kool_Quick_Settings.sh",
+	"on-click-right": "$HOME/.config/hypr/scripts/KeyHints.sh",
+	"on-click-middle": "$HOME/.config/hypr/scripts/WaybarStyles.sh",
+	"tooltip": true,
+	"tooltip-format": "Left Click: KooL Quick Settings\nMiddle Click: Waybar Styles\nRight Click: Key Hints",
+},
+
+// macOS-style: bold app name instead of the (noisy, ever-changing) window title
+"hyprland/window#mac": {
+	"format": "{class}",
+	"separate-outputs": true,
+	"max-length": 30,
+	"rewrite": {
+		"^firefox$|^org\\.mozilla\\.firefox$": "Firefox",
+		"^kitty$|^kitty-dropterm$": "Kitty",
+		"^com\\.mitchellh\\.ghostty$": "Ghostty",
+		"^[Aa]lacritty$": "Alacritty",
+		"^org\\.gnome\\.Nautilus$": "Files",
+		"^[Tt]hunar$": "Thunar",
+		"^org\\.kde\\.dolphin$": "Dolphin",
+		"^(code|code-oss|Code|codium|VSCodium|code-url-handler)$": "VS Code",
+		"^dev\\.zed\\.Zed$": "Zed",
+		"^(google-chrome|[Cc]hromium|chromium-browser)$": "Chrome",
+		"^brave-browser$": "Brave",
+		"^zen$|^zen-browser$": "Zen",
+		"^(discord|vesktop|[Vv]esktop|dev\\.vencord\\.Vesktop)$": "Discord",
+		"^(org\\.telegram\\.desktop|[Tt]elegram-desktop)$": "Telegram",
+		"^[Ss]potify$": "Spotify",
+		"^obsidian$": "Obsidian",
+		"^mpv$": "mpv",
+		"^vlc$": "VLC",
+		"^(org\\.pulseaudio\\.pavucontrol|pavucontrol)$": "Volume Control",
+		"^blueman-manager$": "Bluetooth",
+		"^nwg-look$": "Appearance",
+		"^(qt5ct|qt6ct)$": "Qt Settings",
+		"^libreoffice-(\\w+)$": "LibreOffice",
+		"^(obs|com\\.obsproject\\.Studio)$": "OBS Studio",
+		"^org\\.gnome\\.(\\w+)$": "$1",
+		"^org\\.kde\\.(\\w+)$": "$1",
+	},
+},
+
+// workspaces with app icons: only spacing is tuned here, the icon rules
+// still come from "hyprland/workspaces#rw" in ModulesWorkspaces (objects are merged)
+"hyprland/workspaces#rw": {
+	"format": "{name}\u2002{windows}",
+	"format-window-separator": "",
+},
+
+"custom/cava_mviz#mac": {
+	"exec": "$HOME/.config/hypr/scripts/WaybarCava.sh --hide-silent",
+	"return-type": "json",
+	"restart-interval": 5,
+	"format": "{}",
+	"tooltip": false,
+	"on-click": "playerctl play-pause",
+},
+
+"custom/media#mac": {
+	"exec": "$HOME/.config/hypr/scripts/WaybarMedia.sh",
+	"return-type": "json",
+	"restart-interval": 5,
+	"format": "{}",
+	"escape": true,
+	"max-length": 40,
+	"on-click": "playerctl play-pause",
+	"on-click-right": "playerctl next",
+	"on-click-middle": "playerctl previous",
+	"on-scroll-up": "$HOME/.config/hypr/scripts/Volume.sh --inc",
+	"on-scroll-down": "$HOME/.config/hypr/scripts/Volume.sh --dec",
+},
+
+// live up/down speed; min-length keeps the bar from jittering as digits change
+"network#speed_mac": {
+	"interval": 2,
+	"format": "󰁅 {bandwidthDownBytes}  󰁝 {bandwidthUpBytes}",
+	"format-disconnected": "󰁅 –  󰁝 –",
+	"tooltip-format": "{ifname}  {ipaddr}\nDownload {bandwidthDownBytes} · Upload {bandwidthUpBytes}",
+	"min-length": 22,
+	"justify": "center",
+},
+
+// CPU package temperature (same sensor as the original config; hwmonN changes between boots)
+"temperature#mac": {
+	"interval": 5,
+	"hwmon-path-abs": "/sys/devices/platform/coretemp.0/hwmon",
+	"input-filename": "temp1_input",
+	"critical-threshold": 85,
+	"format": "󰔏 {temperatureC}°",
+	"format-critical": "󰸁 {temperatureC}°",
+	"tooltip-format": "CPU {temperatureC}°C",
+	"on-click-right": "$HOME/.config/hypr/scripts/WaybarScripts.sh --nvtop",
+},
+
+"network#mac": {
+	"interval": 5,
+	"format-wifi": "{icon}",
+	"format-ethernet": "󰈀",
+	"format-disconnected": "󰤮",
+	"format-linked": "󰤫",
+	"format-icons": [ "󰤯", "󰤟", "󰤢", "󰤥", "󰤨" ],
+	"tooltip-format-wifi": "{essid}  ({signalStrength}%)\n{ipaddr}\n {bandwidthUpBytes}   {bandwidthDownBytes}",
+	"tooltip-format-ethernet": "{ifname}\n{ipaddr}",
+	"tooltip-format-disconnected": "Disconnected\n\nClick: Wi-Fi menu · Right Click: Network Settings",
+	"on-click": "$HOME/.config/hypr/scripts/WaybarWifi.sh",
+	"on-click-right": "nm-connection-editor",
+},
+
+"bluetooth#mac": {
+	"format": "󰂯",
+	"format-off": "󰂲",
+	"format-disabled": "󰂲",
+	"format-connected": "󰂱",
+	"tooltip-format": "{controller_alias}: {status}",
+	"tooltip-format-connected": "{device_enumerate}",
+	"tooltip-format-enumerate-connected": "{device_alias}",
+	"tooltip-format-enumerate-connected-battery": "{device_alias}  {device_battery_percentage}%",
+	"on-click": "blueman-manager",
+},
+
+"pulseaudio#mac": {
+	"format": "{icon}",
+	"format-bluetooth": "{icon}",
+	"format-muted": "󰝟",
+	"format-icons": {
+		"headphone": "󰋋",
+		"headset": "󰋎",
+		"default": [ "󰕿", "󰖀", "󰕾" ],
+	},
+	"tooltip-format": "{desc}  {volume}%",
+	"scroll-step": 5.0,
+	"on-click": "$HOME/.config/hypr/scripts/Volume.sh --toggle",
+	"on-click-right": "pavucontrol -t 3",
+	"on-scroll-up": "$HOME/.config/hypr/scripts/Volume.sh --inc",
+	"on-scroll-down": "$HOME/.config/hypr/scripts/Volume.sh --dec",
+	"smooth-scrolling-threshold": 1,
+},
+
+"battery#mac": {
+	"interval": 30,
+	"bat": "BAT1",
+	"adapter": "ACAD",
+	"states": { "warning": 25, "critical": 12 },
+	"format": "{capacity}%  {icon}",
+	"format-charging": "{capacity}%  󰂄",
+	"format-plugged": "{capacity}%  󰚥",
+	"format-full": "{capacity}%  󰁹",
+	"format-icons": [ "󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹" ],
+	"tooltip-format": "{timeTo}  ·  {power}W",
+	"on-scroll-up": "$HOME/.config/hypr/scripts/Brightness.sh --inc",
+	"on-scroll-down": "$HOME/.config/hypr/scripts/Brightness.sh --dec",
+},
+
+"custom/swaync#mac": {
+	"format": "{icon}",
+	"format-icons": {
+		"notification": "󰂚",
+		"none": "󰂜",
+		"dnd-notification": "󰂛",
+		"dnd-none": "󰂛",
+		"inhibited-notification": "󰂚",
+		"inhibited-none": "󰂜",
+		"dnd-inhibited-notification": "󰂛",
+		"dnd-inhibited-none": "󰂛",
+	},
+	"return-type": "json",
+	"exec-if": "which swaync-client",
+	"exec": "swaync-client -swb",
+	"on-click": "sleep 0.1 && swaync-client -t -sw",
+	"on-click-right": "swaync-client -d -sw",
+	"tooltip": true,
+	"tooltip-format": "Left Click: Notifications\nRight Click: Do Not Disturb",
+	"escape": true,
+},
+
+"clock#mac": {
+	"interval": 1,
+	"format": "{:%a %d %b   %H:%M}",
+	"format-alt": "{:%A, %d %B %Y  %H:%M:%S}",
+	"tooltip-format": "<tt><small>{calendar}</small></tt>",
+	"calendar": {
+		"mode": "month",
+		"on-scroll": 1,
+		"format": {
+			"months":   "<span color='#f5f5f7'><b>{}</b></span>",
+			"days":     "<span color='#c7c7cc'>{}</span>",
+			"weekdays": "<span color='#8e8e93'><b>{}</b></span>",
+			"today":    "<span color='#0a84ff'><b><u>{}</u></b></span>",
+		},
+	},
+	"actions": {
+		"on-scroll-up": "shift_down",
+		"on-scroll-down": "shift_up",
+	},
+},
+}

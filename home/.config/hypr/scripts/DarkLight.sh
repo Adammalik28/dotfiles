@@ -21,9 +21,9 @@ wallust_config="$HOME/.config/wallust/wallust.toml"
 pallete_dark="dark16"
 pallete_light="light16"
 qt5ct_dark="$HOME/.config/qt5ct/colors/Catppuccin-Mocha.conf"
-qt5ct_light="$HOME/.config/qt5ct/colors/Catppuccin-Latte.conf"
+qt5ct_light="$HOME/.config/qt5ct/colors/Soft-Light.conf"   # was Catppuccin-Latte (too bright)
 qt6ct_dark="$HOME/.config/qt6ct/colors/Catppuccin-Mocha.conf"
-qt6ct_light="$HOME/.config/qt6ct/colors/Catppuccin-Latte.conf"
+qt6ct_light="$HOME/.config/qt6ct/colors/Soft-Light.conf"   # was Catppuccin-Latte (too bright)
 
 # intial kill process
 for pid in waybar rofi swaync ags swaybg; do
@@ -81,7 +81,17 @@ set_waybar_style() {
     waybar_style_link="$HOME/.config/waybar/style.css"
     style_prefix="\\[${theme}\\].*\\.css$"
 
-    style_file=$(find -L "$waybar_styles" -maxdepth 1 -type f -regex ".*$style_prefix" | shuf -n 1)
+    # macOS Clean layout has its own matched Dark/Light styles; the random [Dark]/[Light]
+    # styles below were made for other layouts and break it.
+    if [[ "$(readlink -f "$HOME/.config/waybar/config")" == *"macOS Clean"* ]]; then
+        if [ "$theme" = "Light" ]; then
+            style_file="$waybar_styles/[macOS] Clean Light.css"
+        else
+            style_file="$waybar_styles/[macOS] Clean.css"
+        fi
+    else
+        style_file=$(find -L "$waybar_styles" -maxdepth 1 -type f -regex ".*$style_prefix" | shuf -n 1)
+    fi
 
     if [ -n "$style_file" ]; then
         ln -sf "$style_file" "$waybar_style_link"
@@ -117,8 +127,11 @@ if command -v ags >/dev/null 2>&1; then
     fi
 fi
 
-# kitty background color change
-if [ "$next_mode" = "Dark" ]; then
+# kitty colours: if kitty.conf uses the macOS-Dark/macOS-Light themes, just swap the include
+# (the sed fallback below only works for configs that set foreground/background directly)
+if grep -qE '^include \./kitty-themes/macOS-(Dark|Light)\.conf' "${kitty_conf}"; then
+    sed -i -E "s|^include \./kitty-themes/macOS-(Dark\|Light)\.conf|include ./kitty-themes/macOS-${next_mode}.conf|" "${kitty_conf}"
+elif [ "$next_mode" = "Dark" ]; then
     sed -i '/^foreground /s/^foreground .*/foreground #dddddd/' "${kitty_conf}"
 	sed -i '/^background /s/^background .*/background #000000/' "${kitty_conf}"
 	sed -i '/^cursor /s/^cursor .*/cursor #dddddd/' "${kitty_conf}"
@@ -126,6 +139,19 @@ else
 	sed -i '/^foreground /s/^foreground .*/foreground #000000/' "${kitty_conf}"
 	sed -i '/^background /s/^background .*/background #dddddd/' "${kitty_conf}"
 	sed -i '/^cursor /s/^cursor .*/cursor #000000/' "${kitty_conf}"
+fi
+
+# Claude Code theme follows the mode: its "dark" theme draws light text, which is unreadable
+# on the light kitty theme (and vice versa). Only touches plain "dark"/"light" values.
+claude_settings="$HOME/.claude/settings.json"
+if [ -f "$claude_settings" ] && command -v jq >/dev/null 2>&1; then
+    claude_theme=$(jq -r '.theme // empty' "$claude_settings" 2>/dev/null)
+    if [ "$claude_theme" = "dark" ] || [ "$claude_theme" = "light" ]; then
+        claude_tmp=$(mktemp) &&
+        jq --arg t "$(echo "$next_mode" | tr '[:upper:]' '[:lower:]')" '.theme = $t' "$claude_settings" > "$claude_tmp" &&
+        cat "$claude_tmp" > "$claude_settings"
+        rm -f "$claude_tmp"
+    fi
 fi
 
 for pid_kitty in $(pidof kitty); do
@@ -145,11 +171,11 @@ $swww "${next_wallpaper}" $effect
 
 # Set Kvantum Manager theme & QT5/QT6 settings
 if [ "$next_mode" = "Dark" ]; then
-    kvantum_theme="catppuccin-mocha-blue"
+    kvantum_theme="WhiteSurDarkSolid"   # opaque WhiteSur dark (was catppuccin-mocha-blue)
     #qt5ct_color_scheme="$HOME/.config/qt5ct/colors/Catppuccin-Mocha.conf"
     #qt6ct_color_scheme="$HOME/.config/qt6ct/colors/Catppuccin-Mocha.conf"
 else
-    kvantum_theme="catppuccin-latte-blue"
+    kvantum_theme="WhiteSurSoft"   # soft-grey light (was WhiteSur / catppuccin-latte-blue)
     #qt5ct_color_scheme="$HOME/.config/qt5ct/colors/Catppuccin-Latte.conf"
     #qt6ct_color_scheme="$HOME/.config/qt6ct/colors/Catppuccin-Latte.conf"
 fi
@@ -186,6 +212,13 @@ set_custom_gtk_theme() {
         echo "Invalid mode provided."
         return 1
     fi
+
+    # GTK3 apps (Thunar, etc.) read this flag from settings.ini - not gsettings color-scheme -
+    # to decide whether to load the theme's dark variant, so it has to follow the mode too.
+    prefer_dark=0; [ "$mode" == "Dark" ] && prefer_dark=1
+    for ini in "$HOME/.config/gtk-3.0/settings.ini" "$HOME/.config/gtk-4.0/settings.ini"; do
+        [ -f "$ini" ] && sed -i "s/^gtk-application-prefer-dark-theme=.*/gtk-application-prefer-dark-theme=${prefer_dark}/" "$ini"
+    done
 
     themes=()
     icons=()

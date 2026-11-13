@@ -1,0 +1,278 @@
+/* ============================================================
+   Waybar — macOS Clean (Light)
+   Floating translucent bar with rounded ends, monochrome icons, one accent.
+   Pair with layout "[TOP] macOS Clean". Used by DarkLight.sh in Light mode.
+   Translucency needs Hyprland blur on the waybar layer:
+     layerrule = match:namespace waybar, blur on, ignore_alpha 0.2
+   ============================================================ */
+
+@define-color bar-bg        rgba(214, 214, 220, 0.74);
+@define-color fg            rgba(28, 28, 30, 0.95);
+@define-color fg-dim        rgba(44, 44, 50, 0.70);
+@define-color fg-faint      rgba(44, 44, 50, 0.38);
+@define-color hover-bg      rgba(0, 0, 0, 0.08);
+@define-color active-bg     rgba(0, 0, 0, 0.12);
+@define-color accent        #0a84ff;
+@define-color warn          #e08600;
+@define-color crit          #d70015;
+
+
+* {
+    font-family: "Inter", "Adwaita Sans", "Symbols Nerd Font", "JetBrainsMono Nerd Font", sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    min-height: 0;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    text-shadow: none;
+}
+
+/* floating bar with rounded ends: the window stays transparent and the
+   inner box carries the background (margins are set in the layout) */
+window#waybar {
+    background: transparent;
+    color: @fg;
+}
+window#waybar > box {
+    background: @bar-bg;
+    border: 1px solid rgba(0, 0, 0, 0.10);
+    border-radius: 16px;
+}
+
+window#waybar.empty #window {
+    background: transparent;
+}
+
+tooltip {
+    background: rgba(236, 236, 240, 0.97);
+    border: 1px solid rgba(0, 0, 0, 0.10);
+    border-radius: 10px;
+}
+tooltip label {
+    color: @fg;
+    padding: 4px 6px;
+}
+
+
+/* ---- Shared item look: no boxes, just text + soft hover ---- */
+#custom-menu,
+#custom-settings,
+#custom-cava_mviz,
+#workspaces button,
+#window,
+#custom-tray_toggle,
+#tray,
+#privacy,
+#custom-media,
+#custom-power,
+#network,
+#temperature,
+#bluetooth,
+#pulseaudio,
+#battery,
+#custom-swaync,
+#clock {
+    background: transparent;
+    color: @fg;
+    padding: 0 11px;
+    margin: 5px 1px;
+    border-radius: 9px;
+    transition: background 120ms ease;
+}
+
+#custom-menu:hover,
+#custom-settings:hover,
+#workspaces button:hover,
+#custom-tray_toggle:hover,
+#custom-media:hover,
+#custom-power:hover,
+#network:hover,
+#temperature:hover,
+#bluetooth:hover,
+#pulseaudio:hover,
+#battery:hover,
+#custom-swaync:hover,
+#clock:hover {
+    background: @hover-bg;
+}
+
+.modules-left  { padding-left: 6px; }
+.modules-right { padding-right: 6px; }
+
+
+/* ---- Left: launcher, settings, cava, app title ---- */
+#custom-menu {
+    font-size: 20px;
+    padding: 0 12px 0 12px;
+}
+#custom-settings {
+    color: @fg-dim;
+    font-size: 19px;
+    padding: 0 10px;
+}
+#custom-settings:hover {
+    color: @fg;
+}
+#custom-cava_mviz {
+    color: @fg-dim;
+    font-family: "JetBrainsMono Nerd Font", monospace;
+    font-size: 13px;
+    padding: 0 6px 0 8px;
+}
+#custom-media {
+    color: @fg-dim;
+    font-weight: 500;
+    padding: 0 10px 0 4px;
+    margin-right: 6px;
+}
+#custom-media:hover {
+    color: @fg;
+}
+
+
+/* ---- Center: workspaces with app icons ----
+   Dark recessed capsule (reads well on any wallpaper) with a solid
+   white pill for the active workspace, like a macOS segmented control. */
+#workspaces {
+    background: rgba(0, 0, 0, 0.09);
+    border: 1px solid rgba(0, 0, 0, 0.10);
+    border-radius: 14px;
+    margin: 4px 0;
+    padding: 0 3px;
+}
+#workspaces button {
+    color: rgba(44, 44, 50, 0.46);
+    padding: 0 12px;
+    margin: 3px 1px;
+    border-radius: 10px;
+    font-family: "Inter", "Adwaita Sans", "Symbols Nerd Font", "JetBrainsMono Nerd Font", sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+}
+/* label is "N<en-space><icons>": trim the right padding by the trailing
+   space so numbers and icons stay optically centred in each button */
+#workspaces button.empty {
+    color: rgba(44, 44, 50, 0.46);
+    padding-right: 5px;
+}
+#workspaces button:not(.empty) {
+    color: rgba(28, 28, 30, 0.92);
+    padding-right: 9px;
+}
+#workspaces button:hover {
+    background: rgba(0, 0, 0, 0.08);
+    color: #000000;
+}
+#workspaces button.active {
+    background: #f3f3f6;
+    color: #1c1c1e;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+}
+#workspaces button.active:hover {
+    background: #f9f9fb;
+    color: #1c1c1e;
+}
+#workspaces button.urgent {
+    background: alpha(@crit, 0.85);
+    color: #ffffff;
+}
+
+#window {
+    font-weight: 700;
+    padding: 0 8px;
+}
+
+
+/* ---- Right: status icons ---- */
+#custom-tray_toggle {
+    color: @fg-dim;
+    font-size: 17px;
+}
+#tray {
+    padding: 0 6px;
+}
+#tray > .passive { -gtk-icon-effect: dim; }
+#tray > .needs-attention { -gtk-icon-effect: highlight; }
+
+#privacy {
+    padding: 0 6px;
+}
+#privacy-item {
+    color: @warn;
+    padding: 0 2px;
+}
+
+
+#network,
+#bluetooth,
+#pulseaudio,
+#custom-swaync {
+    font-size: 19px;
+    padding: 0 10px;
+}
+
+/* bell: dim when empty, full white when something is waiting */
+#custom-swaync {
+    color: @fg-dim;
+}
+#custom-swaync.notification,
+#custom-swaync.inhibited-notification {
+    color: @fg;
+}
+#custom-swaync.dnd-none,
+#custom-swaync.dnd-notification,
+#custom-swaync.dnd-inhibited-none,
+#custom-swaync.dnd-inhibited-notification {
+    color: @fg-faint;
+}
+
+#network.disconnected,
+#bluetooth.off,
+#bluetooth.disabled,
+#pulseaudio.muted {
+    color: @fg-faint;
+}
+
+#battery {
+    font-size: 15px;
+}
+#battery.charging,
+#battery.plugged {
+    color: @fg;
+}
+#battery.warning:not(.charging) {
+    color: @warn;
+}
+#battery.critical:not(.charging) {
+    color: @crit;
+}
+
+#clock {
+    font-weight: 600;
+    padding: 0 12px 0 10px;
+}
+
+
+/* network speed + CPU temperature: small, dim text (not icon-sized) */
+#network.speed_mac,
+#temperature {
+    font-size: 13px;
+    color: @fg-dim;
+    padding: 0 9px;
+}
+#temperature.critical {
+    color: @crit;
+}
+
+
+/* power button: quiet until hovered, then turns red */
+#custom-power {
+    color: @fg-dim;
+    font-size: 17px;
+    padding: 0 10px 0 8px;
+    margin-right: 2px;
+}
+#custom-power:hover {
+    color: @crit;
+}

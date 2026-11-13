@@ -83,13 +83,29 @@ done
 #   Ensures that ALL temporary rules are removed
 #   even on crash, SIGTERM, or user interruption.
 
+# Temporary rules are named and kept in a Lua global so they can be disabled later.
+RULE_ID="tak0_$$"
+
+add_capture_rule() { # add_capture_rule <name> <prop> <regex>
+  hyprctl eval "_G.$RULE_ID = _G.$RULE_ID or {}
+    _G.$RULE_ID['$1'] = hl.window_rule({ name = '${RULE_ID}_$1', match = { $2 = '$3' }, workspace = '$TARGET_WS silent' })" \
+    >>"$LOGFILE" 2>&1 || true
+}
+
+release_capture_rule() { # release_capture_rule <name>
+  hyprctl eval "if _G.$RULE_ID and _G.$RULE_ID['$1'] then _G.$RULE_ID['$1']:set_enabled(false) end" \
+    >>"$LOGFILE" 2>&1 || true
+}
+
 cleanup() {
   echo "Cleanup: removing temporary capture rules and initialWorkspace at $(date)" >>"$LOGFILE"
 
-  hyprctl keyword windowrulev2 "unset, initialClass:.*" >>"$LOGFILE" 2>&1 || true
+  release_capture_rule wide
+  local i=0
   for RULE in "${CAPTURE_RULES[@]}"; do
     echo "Cleanup: removing temporary capture rule: $RULE" >>"$LOGFILE"
-    hyprctl keyword windowrulev2 "unset, $RULE" >>"$LOGFILE" 2>&1 || true
+    release_capture_rule "r$i"
+    i=$((i + 1))
   done
 }
 
@@ -107,9 +123,7 @@ trap cleanup EXIT INT TERM ERR
 #     • steamwebhelper
 
 echo "Applying temporary initialWorkspace capture (initialClass:.*)" >>"$LOGFILE"
-hyprctl keyword windowrulev2 \
-  "initialWorkspace $TARGET_WS silent, initialClass:.*" \
-  >>"$LOGFILE" 2>&1 || true
+add_capture_rule wide initial_class '.*'
 
 # ─────────────────────────────────────────────────────────────────────────────
 # 3️⃣.1 OPTIONAL CLASS-BASED PRE-CAPTURE
@@ -117,11 +131,17 @@ hyprctl keyword windowrulev2 \
 #   Additional precision rules.
 #   Useful for Electron / Steam multi-process hell.
 
+# Rule format: prop:regex, e.g. class:^(steam)$ or initialTitle:^(Foo)$
+rule_index=0
 for RULE in "${CAPTURE_RULES[@]}"; do
   echo "Applying temporary capture rule: $RULE" >>"$LOGFILE"
-  hyprctl keyword windowrulev2 \
-    "initialWorkspace $TARGET_WS silent, $RULE" \
-    >>"$LOGFILE" 2>&1 || true
+  case "${RULE%%:*}" in
+  initialClass) rule_prop=initial_class ;;
+  initialTitle) rule_prop=initial_title ;;
+  *) rule_prop="${RULE%%:*}" ;;
+  esac
+  add_capture_rule "r$rule_index" "$rule_prop" "${RULE#*:}"
+  rule_index=$((rule_index + 1))
 done
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -155,7 +175,7 @@ sleep 1.5
 
 #!TO-DO: Release the nuclear option ASAP
 echo "Releasing ultra-early wide capture" >>"$LOGFILE"
-hyprctl keyword windowrulev2 "unset, initialClass:.*" >>"$LOGFILE" 2>&1 || true
+release_capture_rule wide
 
 # ─────────────────────────────────────────────────────────────────────────────
 # 5️⃣ SUPERVISION LOOP (AUTHORITATIVE PHASE)
@@ -216,8 +236,8 @@ while ((SECONDS < END_TIME)); do
 
     if ((MATCH)) && [[ -z "${SEEN[$ADDR]-}" ]]; then
       echo "Placing window $ADDR (pid $PID, class $CLASS) → WS $TARGET_WS" >>"$LOGFILE"
-      hyprctl dispatch movetoworkspacesilent \
-        "$TARGET_WS,address:$ADDR" >>"$LOGFILE" 2>&1 || true
+      hyprctl dispatch "hl.dsp.window.move({window='address:$ADDR', workspace='$TARGET_WS', follow=false})" \
+        >>"$LOGFILE" 2>&1 || true
       SEEN[$ADDR]=1
     fi
   done < <(hyprctl clients -j | jq -r '.[] | [.pid, .address, .class] | @tsv')

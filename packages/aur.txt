@@ -22,6 +22,7 @@ unityhub
 visual-studio-code-bin
 wallust
 wasistlos
+waybar-git
 waydroid-script-git
 weylus-bin
 whatsie

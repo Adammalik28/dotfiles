@@ -37,25 +37,28 @@ if [[ -z "$touchpad_device" ]]; then
     exit 1
 fi
 
-touchpad_keyword="${TOUCHPAD_KEYWORD:-device[${touchpad_device}]:enabled}"
 mouse_companion="${touchpad_device%-touchpad}-mouse"
 status_file="${XDG_RUNTIME_DIR:-/tmp}/touchpad.status"
+
+set_device() {
+    hyprctl eval "hl.device({ name = '$1', enabled = $2 })"
+}
 
 enable_touchpad() {
     printf "true" >"$status_file"
     notify-send -u low -i "$notif" " Enabling" " touchpad"
-    hyprctl -r keyword "$touchpad_keyword" true
+    set_device "$touchpad_device" true
     if [[ "$mouse_companion" != "$touchpad_device" ]]; then
-        hyprctl -r keyword "device[${mouse_companion}]:enabled" true || true
+        set_device "$mouse_companion" true || true
     fi
 }
 
 disable_touchpad() {
     printf "false" >"$status_file"
     notify-send -u low -i "$notif" " Disabling" " touchpad"
-    hyprctl -r keyword "$touchpad_keyword" false
+    set_device "$touchpad_device" false
     if [[ "$mouse_companion" != "$touchpad_device" ]]; then
-        hyprctl -r keyword "device[${mouse_companion}]:enabled" false || true
+        set_device "$mouse_companion" false || true
     fi
 }
 

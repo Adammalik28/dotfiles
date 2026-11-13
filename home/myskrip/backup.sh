@@ -37,6 +37,7 @@ readonly SUMBER=(
     "$HOME/.bashrc"
     "$HOME/Documents"
     "$HOME/Projects"
+    "$HOME/Project/digidaw"     # Digidaw: agenda, alarm, memori, pengaturan, .env (data ini tidak ada di GitHub)
     "$HOME/catat.txt"
     "$HOME/data"
 )
@@ -48,6 +49,10 @@ readonly RSYNC_EXCLUDES=(
     --exclude='.git/'
     --exclude='*.tmp'
     --exclude='*.log'
+    # Digidaw: profil browser pemutar musik, cache suara, dan model (bisa diunduh ulang) tidak perlu dicadangkan
+    --exclude='/digidaw/browser_profile_*/'
+    --exclude='/digidaw/temp_audio/'
+    --exclude='/digidaw/models/'
 )
 
 DRY_RUN=0

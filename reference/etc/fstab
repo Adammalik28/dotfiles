@@ -13,7 +13,10 @@ UUID=E50A-8DEA      	/boot     	vfat      	rw,relatime,fmask=0022,dmask=0022,cod
 # UUID=01DC26453A05A680  /mnt/Acer  ntfs-3g  defaults,nosuid,nodev,relatime,rw,x-gvfs-show  0  0
 
 # New Volume (nvme0n1p2)
-UUID=01DC9D0D90753B90  /mnt/New_Volume ntfs-3g  defaults,nosuid,nodev,relatime,user,exec,x-gvfs-show  0  0
+UUID=01DC9D0D90753B90  /mnt/Drive_D  ntfs-3g  defaults,nosuid,nodev,relatime,user,exec,x-gvfs-show,x-gvfs-name=Drive\040D  0  0
 
 # new_windows (New Volume)
-UUID=01DCCFE310209990 /mnt/new_windows ntfs-3g defaults,nosuid,nodev,relatime,user,exec,x-gvfs-show  0  0
+UUID=01DCCFE310209990  /mnt/Drive_E  ntfs-3g  defaults,nosuid,nodev,relatime,user,exec,x-gvfs-show,x-gvfs-name=Drive\040E  0  0
+
+# sata ssd sata
+# UUID=0AD5-43D1  /mnt/sata  exfat  defaults,nosuid,nodev,relatime,user,exec,x-gvfs-show,x-gvfs-name=Drive\040F  0  0

@@ -1,0 +1,92 @@
+/* macOS-style dropdown menu for waybar "[TOP] macOS Clean" (used by scripts/MacMenuLib.sh:
+ * WaybarWifi.sh, WaybarPower.sh). Dark by default; the lib overrides the colour variables
+ * in Light mode. Standalone on purpose: kept outside themes/ because that folder is replaced on dots updates. */
+
+configuration {
+    show-icons: false;
+    hover-select: true;
+    me-select-entry: "";
+    me-accept-entry: "MousePrimary";
+}
+
+* {
+    font: "Inter, Adwaita Sans, JetBrainsMono Nerd Font 11.5";
+    bg:      rgba(30, 30, 32, 0.90);
+    fg:      rgba(255, 255, 255, 0.92);
+    fg-dim:  rgba(255, 255, 255, 0.50);
+    sel:     #0a84ff;
+    line:    rgba(255, 255, 255, 0.10);
+    background-color: transparent;
+    text-color: @fg;
+}
+
+window {
+    location: north east;
+    anchor: north east;
+    x-offset: -10px;
+    y-offset: 52px;
+    width: 330px;
+    background-color: @bg;
+    border: 1px;
+    border-color: @line;
+    border-radius: 14px;
+    padding: 6px;
+}
+
+mainbox {
+    children: [ "inputbar", "message", "listview" ];
+    spacing: 4px;
+}
+
+inputbar {
+    children: [ "prompt", "entry" ];
+    padding: 8px 10px 6px 10px;
+    spacing: 8px;
+    border: 0 0 1px 0;
+    border-color: @line;
+}
+prompt {
+    font: "Inter, Adwaita Sans Bold 12";
+}
+entry {
+    placeholder: "Search";
+    placeholder-color: @fg-dim;
+    horizontal-align: 0;
+}
+
+message {
+    padding: 2px 10px;
+}
+textbox {
+    text-color: @fg-dim;
+    font: "Inter, Adwaita Sans 10.5";
+}
+
+listview {
+    columns: 1;
+    lines: 10;
+    fixed-height: false;
+    scrollbar: false;
+    spacing: 1px;
+    padding: 2px 0 0 0;
+}
+
+element {
+    padding: 7px 10px;
+    border-radius: 8px;
+}
+element normal.normal, element alternate.normal {
+    background-color: transparent;
+}
+element normal.active, element alternate.active {
+    background-color: transparent;
+    text-color: @fg;
+}
+element selected.normal, element selected.active {
+    background-color: @sel;
+    text-color: #ffffff;
+}
+element-text {
+    text-color: inherit;
+    font: "Inter, Adwaita Sans, Symbols Nerd Font, JetBrainsMono Nerd Font 11.5";
+}

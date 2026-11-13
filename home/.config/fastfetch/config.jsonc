@@ -77,6 +77,7 @@
     {
     "type": "cpu",
     "key": "│ ├󰻠",
+    "format": "{name} ({core-types})",
     "keyColor": "green"
     },
     {

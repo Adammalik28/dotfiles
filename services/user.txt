@@ -1,3 +1,5 @@
+digidaw.service
+hermes-gateway.service
 pipewire.service
 wireplumber.service
 xdg-user-dirs.service

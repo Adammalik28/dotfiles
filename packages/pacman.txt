@@ -19,6 +19,7 @@ cliphist
 cuda
 cups
 cups-pk-helper
+dialog
 discord
 docker
 docker-compose
@@ -29,6 +30,7 @@ ffmpegthumbnailer
 firefox
 flatpak
 freecad
+freerdp
 fzf
 gamemode
 ghidra
@@ -139,6 +141,7 @@ qt6-virtualkeyboard
 qt6-wayland
 qt6ct
 quickshell
+rclone
 reflector
 rofi
 scrcpy
@@ -155,8 +158,11 @@ sudo
 swappy
 swaync
 system-config-printer
+tailscale
 telegram-desktop
 tesseract
+tesseract-data-eng
+tesseract-data-ind
 thunar
 thunar-archive-plugin
 thunar-volman
@@ -181,7 +187,6 @@ vlc
 vulkan-intel
 vulkan-nouveau
 vulkan-radeon
-waybar
 waydroid
 wget
 wine

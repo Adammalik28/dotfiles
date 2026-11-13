@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Whatsie
+Exec=/usr/bin/whatsie
+Icon=whatsapp
+Type=Application
+Categories=Network;Chat;
+Terminal=false

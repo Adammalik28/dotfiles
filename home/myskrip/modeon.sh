@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Workspace 1
-hyprctl dispatch workspace 1
+hyprctl dispatch 'hl.dsp.focus({workspace=1})'
 sleep 0.5
 
 wasistlos &
@@ -11,7 +11,7 @@ whatsie &
 sleep 1
 
 # Workspace 2
-hyprctl dispatch workspace 2
+hyprctl dispatch 'hl.dsp.focus({workspace=2})'
 sleep 0.5
 
 firefox \

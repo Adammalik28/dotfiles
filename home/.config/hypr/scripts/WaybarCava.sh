@@ -10,6 +10,12 @@
 
 set -euo pipefail
 
+# --hide-silent: print empty text (module hides) after ~2s of silence (60 frames @ 30fps)
+hide_silent=0
+[[ ${1:-} == --hide-silent ]] && hide_silent=1
+silent_frames=0
+last=""
+
 # Karakter batang, dari pendek ke tinggi (8 level, sesuai ascii_max_range di bawah)
 bars=("▁" "▂" "▃" "▄" "▅" "▆" "▇" "█")
 
@@ -42,6 +48,7 @@ EOF
 
 cava -p "$cava_cfg" 2>/tmp/waybar_cava_error.log | while IFS= read -r line; do
     out=""
+    loud=0
     IFS=';' read -ra values <<< "$line"
     for v in "${values[@]}"; do
         [[ -z "$v" ]] && continue
@@ -49,6 +56,13 @@ cava -p "$cava_cfg" 2>/tmp/waybar_cava_error.log | while IFS= read -r line; do
         (( v < 0 )) && v=0
         (( v > 7 )) && v=7
         out+="${bars[$v]}"
+        (( v > 0 )) && loud=1
     done
+    if (( hide_silent )); then
+        if (( loud )); then silent_frames=0; else silent_frames=$((silent_frames + 1)); fi
+        (( silent_frames > 60 )) && out=""
+    fi
+    [[ $out == "$last" ]] && continue
+    last=$out
     printf '{"text":"%s","tooltip":"Cava Visualizer","class":"cava"}\n' "$out"
 done

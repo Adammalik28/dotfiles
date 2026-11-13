@@ -12,6 +12,7 @@ ollama.service
 postgresql.service
 sddm.service
 systemd-timesyncd.service
+tailscaled.service
 cups.socket
 libvirtd-admin.socket
 libvirtd-ro.socket
